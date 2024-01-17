@@ -169,9 +169,12 @@ def avalia_textos(textos, ass_cp):
     '''IMPLEMENTAR. Essa funcao recebe uma lista de textos e uma assinatura ass_cp e deve devolver o numero (1 a n) do texto com maior probabilidade de ter sido infectado por COH-PIAH.'''
     textos_a_avaliar = [textos]
     valores_das_assinaturas = []
+    texto_infectado = 0
     for texto in textos_a_avaliar:
         valores_das_assinaturas.append(calcula_assinatura(texto))
-    for i in range(len(valores_das_assinaturas)):
+    for valor in valores_das_assinaturas:    
+        if numero_mais_prox(valores_das_assinaturas, ass_cp)
+
 
          
 
