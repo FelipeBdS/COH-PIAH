@@ -45,16 +45,16 @@ def separa_palavras(frase):
     '''A funcao recebe uma frase e devolve uma lista das palavras dentro da frase'''
     return frase.split()
 
-def n_palavras_unicas(lista_palavras):
-    '''Essa funcao recebe uma lista de palavras e devolve o numero de palavras que aparecem uma unica vez'''
+def n_palavras_unicas(lista_palavras.split()):
+    '''Essa função recebe uma lista de palavras e devolve o número de palavras que aparecem uma única vez'''
     freq = dict()
     unicas = 0
     for palavra in lista_palavras:
         p = palavra.lower()
         if p in freq:
-            if freq[p] == 1:
-                unicas -= 1
             freq[p] += 1
+            if freq[p] == 2:
+                unicas -= 1
         else:
             freq[p] = 1
             unicas += 1
@@ -102,7 +102,7 @@ def relacao_type_token(texto):
 
 # Função para definir a Razão Hapax Legomana
 def razao_hapax_legomana(texto):
-    hapax_legomana = n_palavras_unicas(texto) / numero_total_palavras(texto)
+    hapax_legomana = n_palavras_unicas(texto.split()) / numero_total_palavras(texto)
     return hapax_legomana
 
 
@@ -157,35 +157,52 @@ def calcula_assinatura(texto):
     complexSentenca = complexidade_de_sentenca(texto) 
     tamMedioFrase = tamanho_medio_frase(texto)
 
-    assinatura = [tamMedioPalavra, typeToken, hapaxLegomana, tamMedioSentenca, complexSentenca, tamMedioFrase]
-    valor_final = sum(assinatura)
-    return valor_final
+    return [tamMedioPalavra, typeToken, hapaxLegomana, tamMedioSentenca, complexSentenca,  tamMedioFrase ] 
 
 
-def numero_mais_prox(lista, numero):
-    return min(lista, key=lambda x: abs(x - numero))
+def proximidade_numerica(num1, num2):
+    diferenca_absoluta = abs(num1 - num2)
+
+    intervalo_maximo = 100 
+
+    pontuacao_maxima = 10
+    
+    pontuacao = pontuacao_maxima - (diferenca_absoluta / intervalo_maximo) * pontuacao_maxima
+    
+    pontuacao = max(1, min(10, pontuacao))
+    
+    return pontuacao
 
 def avalia_textos(textos, ass_cp):
     '''IMPLEMENTAR. Essa funcao recebe uma lista de textos e uma assinatura ass_cp e deve devolver o numero (1 a n) do texto com maior probabilidade de ter sido infectado por COH-PIAH.'''
     textos_a_avaliar = [textos]
     valores_das_assinaturas = []
-    texto_infectado = 0
     for texto in textos_a_avaliar:
         valores_das_assinaturas.append(calcula_assinatura(texto))
-    for valor in valores_das_assinaturas:    
-        if numero_mais_prox(valores_das_assinaturas, ass_cp)
-
-
-         
-
-    
-
-def main():
-    tracos_linguisticos = le_assinatura()
-    assinatura_conhecida = soma_elementos(tracos_linguisticos)
-
-    textos = le_textos()
-    textos_a_comparar = [textos]
+        for valor in valores_das_assinaturas:
+            numero_mais_proximo = proximidade_numerica(valor, ass_cp)
+            if numero_mais_proximo < 6:
+                pass
+            else:
+                return numero_mais_proximo
 
     
+
+# def main():
+#     tracos_linguisticos = le_assinatura()
+#     assinatura_conhecida = soma_elementos(tracos_linguisticos)
+
+#     textos = le_textos()
+#     resultado = avalia_textos(textos, assinatura_conhecida)
     
+texto = "Então resolveu ir brincar com a Máquina pra ser também imperador dos filhos da mandioca. Mas as três cunhas deram muitas risadas e falaram que isso de deuses era gorda mentira antiga, que não tinha deus não e que com a máquina ninguém não brinca porque ela mata. A máquina não era deus não, nem possuía os distintivos femininos de que o herói gostava tanto. Era feita pelos homens. Se mexia com eletricidade com fogo com água com vento com fumo, os homens aproveitando as forças da natureza. Porém jacaré acreditou? nem o herói! Se levantou na cama e com um gesto, esse sim! bem guaçu de desdém, tó! batendo o antebraço esquerdo dentro do outro dobrado, mexeu com energia a munheca direita pras três cunhas e partiu. Nesse instante, falam, ele inventou o gesto famanado de ofensa: a pacova."
+resultado = n_palavras_unicas(texto)
+print(resultado)
+
+            
+
+    
+# exemplo = "oi tudo bem com voce"
+# lista_palavras = exemplo.split()
+# resultado =  n_palavras_unicas(lista_palavras)
+# print(resultado)   
