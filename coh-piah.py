@@ -14,8 +14,6 @@ def le_assinatura():
 
     return [wal, ttr, hlr, sal, sac, pal]
 
-def soma_elementos(valores):
-    return sum(valores)
 
 
 def le_textos():
@@ -45,7 +43,7 @@ def separa_palavras(frase):
     '''A funcao recebe uma frase e devolve uma lista das palavras dentro da frase'''
     return frase.split()
 
-def n_palavras_unicas(lista_palavras.split()):
+def n_palavras_unicas(lista_palavras):
     '''Essa função recebe uma lista de palavras e devolve o número de palavras que aparecem uma única vez'''
     freq = dict()
     unicas = 0
@@ -74,12 +72,17 @@ def n_palavras_diferentes(lista_palavras):
     return len(freq)
 
 # Função que devolve a soma dos tamanhos de todas as palavras do texto
-def tamanho_das_palavras_somadas(texto_completo):
-    palavras = texto_completo.split()
+def tamanho_das_palavras_somadas(lista_textos):
     tamanho_palavras = 0
-    for palavra in palavras:
-        tamanho_palavras += len(palavra)
-    return tamanho_palavras
+    total_palavras = 0
+
+    for texto in lista_textos:
+        palavras = texto.split()
+        for palavra in palavras:
+            tamanho_palavras += len(palavra)
+            total_palavras += 1
+
+    return tamanho_palavras / total_palavras if total_palavras > 0 else 0
 
 
 # Função que devolve o numero total de palavras do texto passado como parâmetro
@@ -97,7 +100,8 @@ def tamanho_medio_palavra(texto):
 
 # Função para definir a relação type-token
 def relacao_type_token(texto):
-    type_token = n_palavras_diferentes(texto) / numero_total_palavras(texto)
+    palavras = texto.split()
+    type_token = n_palavras_diferentes(palavras) / numero_total_palavras(texto)
     return type_token
 
 # Função para definir a Razão Hapax Legomana
@@ -143,10 +147,11 @@ def tamanho_medio_frase(texto):
         return 0       
 
 def compara_assinatura(as_a, as_b):
-    '''IMPLEMENTAR. Essa funcao recebe duas assinaturas de texto e deve devolver o grau de similaridade nas assinaturas.'''
-    diferenca_absoluta = sum(abs(calcula_assinatura(as_a) - calcula_assinatura(as_b)))
+    '''Essa função recebe duas assinaturas de texto e deve devolver o grau de similaridade nas assinaturas.'''
+    diferenca_absoluta = sum(abs(a - b) for a, b in zip(as_a, as_b))
     similaridade_ab = diferenca_absoluta / 6
-    return similaridade_ab    
+    return similaridade_ab
+   
 
 def calcula_assinatura(texto):
     '''IMPLEMENTAR. Essa funcao recebe um texto e deve devolver a assinatura do texto.'''
@@ -174,35 +179,47 @@ def proximidade_numerica(num1, num2):
     return pontuacao
 
 def avalia_textos(textos, ass_cp):
-    '''IMPLEMENTAR. Essa funcao recebe uma lista de textos e uma assinatura ass_cp e deve devolver o numero (1 a n) do texto com maior probabilidade de ter sido infectado por COH-PIAH.'''
-    textos_a_avaliar = [textos]
+    '''Essa função recebe uma lista de textos e uma assinatura ass_cp e deve devolver o número (1 a n) do texto com maior probabilidade de ter sido infectado por COH-PIAH.'''
     valores_das_assinaturas = []
-    for texto in textos_a_avaliar:
-        valores_das_assinaturas.append(calcula_assinatura(texto))
-        for valor in valores_das_assinaturas:
-            numero_mais_proximo = proximidade_numerica(valor, ass_cp)
-            if numero_mais_proximo < 6:
-                pass
-            else:
-                return numero_mais_proximo
+    
+    for texto in textos:
+        assinatura_texto = calcula_assinatura(texto)
+        similaridade = compara_assinatura(assinatura_texto, ass_cp)
+        valores_das_assinaturas.append(similaridade)
+
+    indice_mais_proximo = valores_das_assinaturas.index(max(valores_das_assinaturas)) + 1
+    
+    return indice_mais_proximo
+
 
     
 
+
+    
 # def main():
-#     tracos_linguisticos = le_assinatura()
-#     assinatura_conhecida = soma_elementos(tracos_linguisticos)
+#     valores_conhecidos = le_assinatura()
+#     valores_a_comparar = valores_conhecidos.split()
 
-#     textos = le_textos()
-#     resultado = avalia_textos(textos, assinatura_conhecida)
-    
-texto = "Então resolveu ir brincar com a Máquina pra ser também imperador dos filhos da mandioca. Mas as três cunhas deram muitas risadas e falaram que isso de deuses era gorda mentira antiga, que não tinha deus não e que com a máquina ninguém não brinca porque ela mata. A máquina não era deus não, nem possuía os distintivos femininos de que o herói gostava tanto. Era feita pelos homens. Se mexia com eletricidade com fogo com água com vento com fumo, os homens aproveitando as forças da natureza. Porém jacaré acreditou? nem o herói! Se levantou na cama e com um gesto, esse sim! bem guaçu de desdém, tó! batendo o antebraço esquerdo dentro do outro dobrado, mexeu com energia a munheca direita pras três cunhas e partiu. Nesse instante, falam, ele inventou o gesto famanado de ofensa: a pacova."
-resultado = n_palavras_unicas(texto)
-print(resultado)
+#     textos_a_comparar = le_textos()
+#     for texto in textos_a_comparar:
+
+# Suponha que você tenha uma lista de textos e uma assinatura de referência (ass_cp)
+textos_para_avaliar = [
+    "Num fabulário ainda por encontrar será um dia lida esta fábula...",
+    "Voltei-me para ela; Capitu tinha os olhos no chão...",
+    "Senão quando, estando eu ocupado em preparar e apurar a minha invenção...",
+    "O autor do texto 2 está infectado com COH-PIAH"
+]
+
+assinatura_de_referencia = [4.51, 0.693, 0.55, 70.82, 1.82, 38.5]
+
+# Chame a função para avaliar os textos
+resultado = avalia_textos(textos_para_avaliar, assinatura_de_referencia)
+
+# Exiba o resultado
+print("O texto mais provável de estar infectado com COH-PIAH é o texto número:", resultado)
+
 
             
 
     
-# exemplo = "oi tudo bem com voce"
-# lista_palavras = exemplo.split()
-# resultado =  n_palavras_unicas(lista_palavras)
-# print(resultado)   
