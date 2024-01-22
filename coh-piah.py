@@ -44,7 +44,6 @@ def separa_palavras(frase):
     return frase.split()
 
 def n_palavras_unicas(lista_palavras):
-    '''Essa função recebe uma lista de palavras e devolve o número de palavras que aparecem uma única vez'''
     freq = dict()
     unicas = 0
     for palavra in lista_palavras:
@@ -56,7 +55,6 @@ def n_palavras_unicas(lista_palavras):
         else:
             freq[p] = 1
             unicas += 1
-
     return unicas
 
 def n_palavras_diferentes(lista_palavras):
@@ -72,17 +70,19 @@ def n_palavras_diferentes(lista_palavras):
     return len(freq)
 
 # Função que devolve a soma dos tamanhos de todas as palavras do texto
-def tamanho_das_palavras_somadas(lista_textos):
+def tamanho_das_palavras_somadas(texto):
     tamanho_palavras = 0
-    total_palavras = 0
 
-    for texto in lista_textos:
-        palavras = texto.split()
-        for palavra in palavras:
-            tamanho_palavras += len(palavra)
-            total_palavras += 1
+    palavras = separa_palavras(texto)
+    for palavra in palavras:
+        tamanho_palavras += len(palavra)
+    print(f"Tamanho total das palavras: {tamanho_palavras}")
 
-    return tamanho_palavras / total_palavras if total_palavras > 0 else 0
+    return tamanho_palavras
+
+
+
+
 
 
 # Função que devolve o numero total de palavras do texto passado como parâmetro
@@ -94,8 +94,11 @@ def numero_total_palavras(texto_completo):
 
 # Função para devolver o tamanho médio de palavra
 def tamanho_medio_palavra(texto):
-    tamanho_medio = tamanho_das_palavras_somadas(texto) / numero_total_palavras(texto)
-    return tamanho_medio
+    tamanho_palavras = len(separa_palavras(texto))
+    total_palavras = numero_total_palavras(texto)
+    resultado = tamanho_palavras / total_palavras if total_palavras > 0 else 0
+    return resultado
+
 
 
 # Função para definir a relação type-token
@@ -106,7 +109,9 @@ def relacao_type_token(texto):
 
 # Função para definir a Razão Hapax Legomana
 def razao_hapax_legomana(texto):
-    hapax_legomana = n_palavras_unicas(texto.split()) / numero_total_palavras(texto)
+    texto1 = texto.split()
+    hapax_legomana = n_palavras_unicas(texto1) / numero_total_palavras(texto)
+    print(hapax_legomana)
     return hapax_legomana
 
 
@@ -187,7 +192,7 @@ def avalia_textos(textos, ass_cp):
         similaridade = compara_assinatura(assinatura_texto, ass_cp)
         valores_das_assinaturas.append(similaridade)
 
-    indice_mais_proximo = valores_das_assinaturas.index(max(valores_das_assinaturas)) + 1
+    indice_mais_proximo = valores_das_assinaturas.index(min(valores_das_assinaturas)) + 1
     
     return indice_mais_proximo
 
@@ -196,30 +201,21 @@ def avalia_textos(textos, ass_cp):
 
 
     
-# def main():
-#     valores_conhecidos = le_assinatura()
-#     valores_a_comparar = valores_conhecidos.split()
+def main():
+    valores_conhecidos = le_assinatura()
 
-#     textos_a_comparar = le_textos()
-#     for texto in textos_a_comparar:
+    textos_a_comparar = le_textos()
+    comparacao = avalia_textos(textos_a_comparar, valores_conhecidos)
+    resultado = print("O autor do texto ", comparacao, " está infectado com COH-PIAH")
+    return resultado
+    
 
-# Suponha que você tenha uma lista de textos e uma assinatura de referência (ass_cp)
-textos_para_avaliar = [
-    "Num fabulário ainda por encontrar será um dia lida esta fábula...",
-    "Voltei-me para ela; Capitu tinha os olhos no chão...",
-    "Senão quando, estando eu ocupado em preparar e apurar a minha invenção...",
-    "O autor do texto 2 está infectado com COH-PIAH"
-]
-
-assinatura_de_referencia = [4.51, 0.693, 0.55, 70.82, 1.82, 38.5]
-
-# Chame a função para avaliar os textos
-resultado = avalia_textos(textos_para_avaliar, assinatura_de_referencia)
-
-# Exiba o resultado
-print("O texto mais provável de estar infectado com COH-PIAH é o texto número:", resultado)
+main()
 
 
-            
+
+
+
+           
 
     
